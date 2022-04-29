@@ -6,6 +6,12 @@
 #define BIND_1(callback) std::bind(&https_client::callback, this, std::placeholders::_1)
 #define BIND_2(callback) std::bind(&https_client::callback, this, std::placeholders::_1, std::placeholders::_2)
 
+/**
+ * @brief How about make this works like session?
+ * and Client should manage all the session
+ * - Client must be aware of what happening and happened, so track the transactions 
+ * - 
+ */
 class https_client
 {
 private:
@@ -254,9 +260,26 @@ int main(int argc, char *argv[])
 
     https_client client(ctx, ssl_ctx);
 
+    std::thread main_thread {[&] {
+      char* input_str = new char[50];
+      
+      while(true) {
+        std::cout << "Enter what you want to do. \n>";
+        std::cin.getline(input_str, 50);
+
+        std::string request_cmd {input_str};
+        std::cout << request_cmd << "\n";
+
+        // queue cmd to client 
+
+      }
+      delete[] input_str;
+    }};
+
     // make a thread pool
     std::vector<std::thread> threads;
 
+    // thread can be worked with processing(dispatch) request cmd
     for(int i = 0; i < 4; ++i) {
       threads.push_back(std::thread([&]{
         client.send("GET", argv[1], argv[2]);
@@ -264,8 +287,6 @@ int main(int argc, char *argv[])
 
       threads[i].join();
     }
-
-    // concurrency
 
     ctx.run();
   }
