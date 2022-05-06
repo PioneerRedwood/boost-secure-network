@@ -9,3 +9,8 @@ we need to implement below
 4. Multi-threading, should be send a request or receive a reponse simultanuesly
 
 - HTTPS Request instance
+
+## Question for myself
+- Does it need to handle one socket for multiple request/response?
+- How can be implemented if it needed?
+  - for session deque?
