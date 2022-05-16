@@ -1,4 +1,6 @@
 #include "https_core.h"
+#include "https_session.h"
+// #include "https_client.h"
 
 enum selection_code
 {
@@ -9,9 +11,8 @@ enum selection_code
   quit,
 };
 
-int main(void)
-{
-  // main thread for processing input
+void mainLoop() {
+// main thread for processing input
   char *input = new char[128];
 
   // std::unique_ptr<https_client> client_ = std::make_unique<https_client>();
@@ -27,8 +28,6 @@ int main(void)
     int selection = selection_code::none;
     std::cin >> selection;
     std::cin.clear(std::ios::goodbit);
-
-    https_client
 
     switch (selection)
     {
@@ -65,4 +64,34 @@ int main(void)
     std::memset(input, 0, 128);
   }
   delete[] input;
+}
+
+class single {
+public:
+  single(single& s) = delete; 
+  void operator=(single const&) = delete;
+  static single& getInstance() {
+    static single instance;
+    return instance;
+  }
+
+  void method() {
+    std::cout << "single class method() ..\n";
+  }
+
+private:
+  single() {}
+};
+
+int main(void)
+{
+  // HttpsClient::getInstance().addRequest("GET", "github.com", "/PioneerRedwood");
+  // single::getInstance().method();
+
+  asio::io_context ctx;
+  std::shared_ptr<Session> session = std::make_shared<Session>(ctx);
+  session.get()->send("GET", "github.com", "/PioneerRedwood");
+
+  ctx.run();
+  return 0;
 }

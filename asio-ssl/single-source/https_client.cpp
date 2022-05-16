@@ -68,7 +68,6 @@ private:
 
   bool verify_certificate(bool preverified, ssl::verify_context &ctx)
   {
-
     char subject_name[256];
     X509 *cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
     X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
@@ -103,16 +102,20 @@ private:
   {
     if (error)
     {
-      std::cerr << "Handshake faield: " << error.message() << "\n";
+      std::cerr << "Handshake failed: " << error.message() << "\n";
       return;
     }
 
     std::cout << "Handshake OK\n";
+    send();
+  }
+
+  void send() {
     const char *header = asio::buffer_cast<const char *>(request_.data());
     std::cout << "Request: " << header << "\n";
 
     // strand test
-    asio::async_write(socket_, request_, 
+    asio::async_write(socket_, request_,
       request_strand_.wrap(BIND_2(on_send)));
   }
 

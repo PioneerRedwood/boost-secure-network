@@ -83,7 +83,9 @@
     "functional": "cpp",
     "iterator": "cpp",
     "utility": "cpp",
-    "coroutine": "cpp"
+    "coroutine": "cpp",
+    "__availability": "cpp",
+    "semaphore": "cpp"
   },
   "C_Cpp.errorSquiggles": "Disabled"
 }
