@@ -19,14 +19,14 @@ public:
   }
   
   // header
-  // const std::vector<std::string>& getHeader() {
-  //   return headers_;
-  // }
+  const std::string& getHeader() {
+    return header_;
+  }
 
   // body
-  // const std::string& getBody() {
-  //   return body_;
-  // }
+  const std::string& getBody() {
+    return body_;
+  }
 
   void setRequest(HttpsRequest* request) {
     request_ = request;

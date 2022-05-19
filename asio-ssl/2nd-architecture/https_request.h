@@ -59,6 +59,10 @@ public:
     response_->setBody(body);
   }
 
+  HttpResponse* getResponse() {
+    return response_;
+  }
+
 private:
   bool isInitialized_ = false;
   unsigned assignedId_ = -1;

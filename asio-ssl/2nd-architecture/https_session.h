@@ -245,6 +245,14 @@ private:
     responseStreambuf_.consume(size);
   }
 
+  HttpRequest* getRequest() {
+    return request_;
+  }
+
+  HttpResponse* getResponse() {
+    return request_->getResponse();
+  }
+
 private:
   asio::io_context &ctx_;
   ssl::context sslCtx_{ssl::context::sslv23};

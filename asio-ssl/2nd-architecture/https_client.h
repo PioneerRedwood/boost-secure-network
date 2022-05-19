@@ -20,9 +20,13 @@ public:
   // desructor
   ~HttpsClient() {}
 
+  void send(HttpsRequest* request) {
+    // queue request into list
+  }
+
   // for overloading adding reqeust
   void addRequest(const std::string& url) {
-    
+
   }
 
   // add request
@@ -56,23 +60,22 @@ private:
   // constructor
   HttpsClient() {}
 
-  // process request 
-  void processRequest() {
-    // using mutex for here?
-    // the session we handle for here could have something to receive
-    std::lock_guard<std::mutex> guard(requestMutex_);
-    for(auto sessionPair : sessionMap_) {
-      // check the session is over ? receiving data has been over
-    }
-  }
-
-  void handleGET() {
+  void dispatchCallback(HttpsResponse* response) {
 
   }
 
-  // give request data
-  void handlePOST() {
+  void networkThread() {
+    ctx_.run();
+    auto loop = [&](){
+      
+      std::lock_guard<std::mutex> guard(requestMutex_);
+      while(!requestList_.empty()) {
+        send(requestList_.pop_front());
+      }
+    };
 
+    std::thread thr{loop};
+    thr.join();
   }
 
 private: 
@@ -84,6 +87,9 @@ private:
 
   std::mutex requestMutex_;
 
-  std::map<unsigned, HttpsResponse*> cachedResponses_;
+  std::list<HttpsResponse*> responseList_;
+  std::list<HttpsRequest*> requestList_;
+
+  // std::map<unsigned, HttpsResponse*> cachedResponses_;
   std::map<unsigned, std::shared_ptr<Session>> sessionMap_;
 }
