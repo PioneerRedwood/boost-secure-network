@@ -218,6 +218,7 @@ private:
     else if(error == asio::error::eof) 
     {
       if(type == receive_type::body) {
+        // TODO: here we need to handle the response received over
         requestMap_[reqNo]->setResponseBody(extractResponseData());
         consumeStreamBuf();
       }

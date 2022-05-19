@@ -20,11 +20,20 @@ public:
   // desructor
   ~HttpsClient() {}
 
+  // for overloading adding reqeust
+  void addRequest(const std::string& url) {
+    
+  }
+
   // add request
   void addRequest(const std::string& method, const std::string& server, const std::string& path) {
     // add request to request queue
     // std::shared_ptr<HttpsRequest> request = std::make_shared<HttpsRequest>(currentId_++);
     // request.get()->initRequest(method, server, path);
+    
+    // how about just make the limitation for sessions on here
+    // add the check logic for idle session for handling request
+    // thousand of session will be created here, 
     std::shared_ptr<Session> session = std::make_shared<Session>(ctx_);
     session.get()->send(method, server, path);
     
@@ -50,17 +59,18 @@ private:
   // process request 
   void processRequest() {
     // using mutex for here?
+    // the session we handle for here could have something to receive
     std::lock_guard<std::mutex> guard(requestMutex_);
     for(auto sessionPair : sessionMap_) {
-      
+      // check the session is over ? receiving data has been over
     }
   }
 
-  // get, post 
   void handleGET() {
 
   }
 
+  // give request data
   void handlePOST() {
 
   }
